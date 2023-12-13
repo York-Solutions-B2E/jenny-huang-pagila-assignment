@@ -6,10 +6,12 @@ SELECT UPPER(first_name || ' ' || last_name) as actor_name FROM actor
 SELECT last_name, COUNT(last_name) FROM actor
 	GROUP BY last_name;
 
---add address
-SELECT staff.first_name, staff.last_name, staff.staff_id, SUM(payment.amount) as total_payments
+SELECT staff.first_name, staff.last_name, address.address, city.city, country.country, SUM(payment.amount) as total_payments 
 	FROM payment JOIN staff on payment.staff_id = staff.staff_id
-	GROUP BY staff.staff_id;
+	JOIN address ON address.address_id = staff.address_id
+	JOIN city on city.city_id = address.city_id
+	JOIN country on city.country_id = country.country_id
+	GROUP BY staff.first_name, staff.last_name, address.address, city.city, address.postal_code, country.country;
 	
 SELECT actor.first_name, actor.last_name 
 	FROM actor JOIN film_actor ON film_actor.actor_id = actor.actor_id 
